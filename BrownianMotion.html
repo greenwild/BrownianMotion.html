@@ -77,19 +77,24 @@
   }
  
   function reset(){
-    paper=document.getElementById('BrownMove');
-    var ctx=paper.getContext('2d');
+    
     window.cancelAnimationFrame(id);
-    golbalx=300;
-    golbaly=300;
-    ctx.clearRect(0, 0, 600, 600);//通过清空一个矩形来清空画布
-
+    
+    
 
 }
    // setInterval(drawBrownMoveCoordinates(400,400,800,800), 1000/30);// 回调函数无法传参数进去，所以x,y 坐标不能赋值！
 
    // setInterval(update, 1000/30)  //这个可以用，1000是一秒，每1/30秒调用一次
 function start(){ 
+    //先清空reset
+    paper=document.getElementById('BrownMove');
+    var ctx=paper.getContext('2d');
+    golbalx=300;
+    golbaly=300;
+    step=0;
+    ctx.clearRect(0, 0, 600, 600);//通过清空一个矩形来清空画布
+
      window.requestAnimationFrame(update);//现在调用update开始动画！必须这么写！
 
 }
