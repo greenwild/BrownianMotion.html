@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brownian Motion</title>
+</head>
+<body>
+    <p >BrownianMotion布朗运动</p>
+    <p id="info"></p>
+    <button onclick="start()">start</button>
+    <button onclick="reset()">reset</button><br>
+    <canvas id="BrownMove" width="600" height="600" style="border: 2px solid "></canvas>
+    
+    <script>
+        //绘制一条随机漫步的线，也就是布朗运动轨迹
+
+     function drawPixel(x,y,pixelWidth,pixelHeight){   //能在指定位置画指定颜色的点，什么都能干！
+        paper=document.getElementById('BrownMove');
+        var ctx=paper.getContext('2d');
+        var imageData=ctx.createImageData(pixelWidth,pixelHeight);//设置像素的长宽
+        for (var i=0;i<imageData.data.length;i+=4){  //设置上面那个点每个像素的颜色和透明度
+            imageData.data[i+0]=255; //r 3个0是黑色，都是255是白色！
+            imageData.data[i+1]=0;//g
+            imageData.data[i+2]=0;//b
+            imageData.data[i+3]=255;//a 透明度，0是完全透明
+        }
+        ctx.putImageData(imageData,x,y);
+    }
+    
+    
+    function drawBrownMoveCoordinates(startX,startY,zeroX,zeroY,borderX,borderY){
+         let x=startX;
+         let y=startY;
+         let direction=Math.floor(Math.random()*4);//产生1～3的随机数；
+        // Math.floor(Math.random()*(maxNum+1)); //产生0-maxNum随机数
+        
+         let gap=1;
+         switch(direction){
+             case 0: x=x+gap;
+             break;
+             case 1: x=x-gap;
+             break;
+             case 2: y=y-gap;
+             break;
+             case 3: y=y+gap;
+             break;
+             default:
+                 }
+            //遇到边界停止移动     
+           
+            if(x<zeroX)x=x+1;
+            if(y<zeroY)y=y+1;
+
+            if(x>borderX)x=x-1;
+            if(y>borderY)y=y-1;
+           
+
+            golbalx=x;
+            golbaly=y;       
+            drawPixel(golbalx,golbaly,1,1);
+         
+                }
+
+
+    var golbalx=300;
+    var golbaly=300;  
+    var step=0;
+    var id;//用于控制开始结束
+    function update(){
+     step++;
+    document.getElementById("info").innerHTML="step:"+step;    
+    drawBrownMoveCoordinates(golbalx,golbaly,0,0,600,600);
+      id=window.requestAnimationFrame(update) //这里用了递归调用,存储id用于停止动画用
+
+  }
+ 
+  function reset(){
+    paper=document.getElementById('BrownMove');
+    var ctx=paper.getContext('2d');
+    window.cancelAnimationFrame(id);
+    golbalx=300;
+    golbaly=300;
+    ctx.clearRect(0, 0, 600, 600);//通过清空一个矩形来清空画布
+
+
+}
+   // setInterval(drawBrownMoveCoordinates(400,400,800,800), 1000/30);// 回调函数无法传参数进去，所以x,y 坐标不能赋值！
+
+   // setInterval(update, 1000/30)  //这个可以用，1000是一秒，每1/30秒调用一次
+function start(){ 
+     window.requestAnimationFrame(update);//现在调用update开始动画！必须这么写！
+
+}
+   //how to use：
+   //https://gomakethings.com/how-to-use-requestanimationframe-with-vanilla-js/  
+
+
+
+
+    </script>
+</body>
+</html>
